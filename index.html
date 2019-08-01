@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
 
@@ -21,7 +21,7 @@
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </head>
 
 
@@ -77,7 +77,7 @@
            </div>
            <div class="form-group">
               <label for="formGroupExampleInput"> Destination </label>
-              <input type="text" class="form-control" id="Destination" placeholder="Example input">
+              <input type="text" class="form-control" id="destination" placeholder="Example input">
             </div>
             <div class="form-group">
                 <label for="formGroupExampleInput"> First Train Time </label>
@@ -93,17 +93,83 @@
          <button type="submit" class="btn btn-primary" id="addTrain"> Submit Train </button>
          <br><br>
     </div>
+    <!--link firebase and initialize-->
 
-    
+      <!-- The core Firebase JS SDK is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyAIS3juy5F2o0GXP-oTb3Ojsw-R5Nt3LRE",
+    authDomain: "train-scheduler-8e176.firebaseapp.com",
+    databaseURL: "https://train-scheduler-8e176.firebaseio.com",
+    projectId: "train-scheduler-8e176",
+    storageBucket: "train-scheduler-8e176.appspot.com",
+    messagingSenderId: "815475722065",
+    appId: "1:815475722065:web:237683144b68482c"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+// Get a reference to the database service
+ //let database = firebase.database();
 
-    
-    
+  //fill the firebase with initial data when the button is clicked
+  $("#addTrain").on("click", function(event){
+    event.preventDefault();
+    //get the user input from the fields and assign them variables 
+    let trainName = $("#name")
+    .val().trim();
+
+    let destination = $("#destination")
+    .val().trim();
+
+    let firstTrain = $("#firstTrain")
+    .val().trim();
+
+    let frequency = $("#frequency")
+    .val().trim();
+
+    //make a local temporary storage to operate on the train data
+    let tempTrain = {
+      name: trainName,
+      destination: destination,
+      firstTrain: firstTrain,
+      frequency: frequency
+
+    };
 
 
+   //then upload the train data to the database
+   //database.ref().push(tempTrain);
+
+   //log test
+   console.log("these values were pushed to the firebase");
+   console.log(tempTrain.name);
+   console.log(tempTrain.destination);
+   console.log(tempTrain.firstTrain);
+   console.log(tempTrain.frequency);
+
+   alert("Train Added");
+
+   //reset the input boxes
+   $("#name").val("");
+   $("#destination").val("");
+   $("#firstTrain").val("");
+   $("#frequency").val("");
 
 
 
   
+
+  });
+</script>
+ 
+    
+
+
+
       
    
   </body>
