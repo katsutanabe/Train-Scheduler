@@ -30,9 +30,9 @@
 
   
   
-  <body>
+ <body>
 
-     <div class="jumbotron jumbotron-fluid bg-dark">
+     <div class="jumbotron jumbotron-fluid">
       <div class="container">
         <h1 class="display-4">"The Train Scheduler"</h1>
         <p class="lead">A spreadsheet about trains: arrival and departure times</p>
@@ -113,7 +113,7 @@
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
 // Get a reference to the database service
- //let database = firebase.database();
+  let database = firebase.database;
 
   //fill the firebase with initial data when the button is clicked
   $("#addTrain").on("click", function(event){
@@ -158,19 +158,62 @@
    $("#destination").val("");
    $("#firstTrain").val("");
    $("#frequency").val("");
-
-
-
-  
+ 
 
   });
+   
+  //then create a firebase event that retrieves data back on the html and formats accordingly
+    database.ref().on("child_added", function(snapshot, prevChildKey){
+    console.log(snapshot.val());
+
+    //store everething into a varible or let
+
+    let snapName = snapshot.val().name;
+    let snapDestination = snapshot.val().destination;
+    let snapFirstTrain = snapshot.val().firstTrain;
+    let snapFrequency = snapshot.val().frequency;
+
+    let timerArr = snapFirstTrain.split(":");
+    let trainTime = moment().hours(timeArr[0]).minutes(timeArr[1]);
+
+    let maxMoment = moment.max(moment(), trainTime);
+    let tMinutes;
+    let tArrival;
+
+    //if the first train is later than the current time, set arrival to the first train time
+    if (maxMoment === trainTime){
+      tArrival = trainTime.format("hh:mm A");
+      tMinutes = trainTime.diff(moment(),"minutes");
+
+    }else {
+      //here we calculate the minutes until arrival
+      let differenceTimes = moment().diff(trainTime, "minutes");
+      let tRemainder = differenceTimes % snapFrequency;
+      tMinutes = snapFrequency - tRemainder;
+      //calculates the arrival time of the train, and adding the tMinutes to the current time
+
+      tArrival = moment().add(tMinutes, "m").format("hh:mm A");
+
+    }
+    console.log("tMinutes: ", tMinutes);
+    console.log("tArrival:"+ tArrival);
+
+    //add each piece of data to it's appropiate column on the table
+
+    $("#train-list").append(`
+      <tr>
+        <th scope="row"> ${snapName}</th>
+        <td>${snapDetination}</td>
+        <td>${snapFrequency}</td>
+        <td>${tArrival}</td>
+        <td>${tMinutes}</td>
+        </tr>
+        `)
+
+  });
+
 </script>
  
-    
-
-
-
-      
    
-  </body>
+</body>
 </html>

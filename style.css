@@ -1,0 +1,27 @@
+.input{
+    margin-left:90px;
+    margin-right:90px;
+}
+ body{
+     background: rgb(155, 153, 153)
+ }
+
+.display-4{
+    color: rgb(7, 17, 153);
+    font-weight: bolder;
+
+
+ }
+
+ .lead{
+     color: rgb(3, 2, 2);
+     font-weight: bolder;
+ }
+
+.jumbotron-fluid{
+    background-image: url("https://cdn.pixabay.com/photo/2016/05/09/17/29/girl-1382026_960_720.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    
+
+}
