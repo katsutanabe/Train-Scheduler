@@ -1,219 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
 
-    <title>Train Scheduler!</title>
+<head>
 
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Train Scheduler!</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-database.js"></script>
 
-    <!-- Added Moment JS -->
+  <!-- Bootstrap CSS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"
+    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Added Moment JS -->
+
+
+  <!-- Optional JavaScript -->
+
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-
-   <!-- Optional JavaScript -->
-
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  </head>
+</head>
 
 
 
 
 
-  
-  
- <body>
 
-     <div class="jumbotron jumbotron-fluid">
-      <div class="container">
-        <h1 class="display-4">"The Train Scheduler"</h1>
-        <p class="lead">A spreadsheet about trains: arrival and departure times</p>
-      </div>
+
+<body>
+
+  <div class="jumbotron jumbotron-fluid">
+    <div class="container">
+      <h1 class="display-4">"The Train Scheduler"</h1>
+      <p class="lead">A spreadsheet about trains: arrival and departure times</p>
     </div>
+  </div>
 
-    <h3 class="m-3"> Check out the Train Schedule </h3>
-    <br>
-    
-    <!--Set up the table for displaying the information from firebase-->
-    <table class="table table-dark" id="trainSchedule">
-      <thead>
-        <tr>
-          <th scope="col">Train Name</th>
-          <th scope="col">Destination</th>
-          <th scope="col">Frequency</th>
-          <th scope="col">Next Train Arrival</th>
-          <th scope="col">Minutes from Now</th>
+  <h3 class="m-3"> Check out the Train Schedule </h3>
+  <br>
 
-        </tr>
-      </thead>
-
-      <!--Designate an area of hte table to accept input from firebase-->
-      <tbody id="train-list">
-
-
-      </tbody>
-    </table>
-
-    <h3 class="m-3"> Add A Train </h3>
-    <br>
-
-
-    <!--Area for user imput. Apply bootstrap-->
-    <div class="input">
-
-         <form>
-           <!--form fileds-->
-           <div class="form-group">
-             <label for="formGroupExampleInput"> Train Name </label>
-             <input type="text" class="form-control" id="name" placeholder="Example input">
-           </div>
-           <div class="form-group">
-              <label for="formGroupExampleInput"> Destination </label>
-              <input type="text" class="form-control" id="destination" placeholder="Example input">
-            </div>
-            <div class="form-group">
-                <label for="formGroupExampleInput"> First Train Time </label>
-                <input type="text" class="form-control" id="firstTrain" placeholder="Example input">
-              </div>
-              <div class="form-group">
-                  <label for="formGroupExampleInput"> Frequency (Minutes) </label>
-                  <input type="text" class="form-control" id="frequency" placeholder="Example input">
-                </div>
-
-         </form>
-         <!--submit button-->
-         <button type="submit" class="btn btn-primary" id="addTrain"> Submit Train </button>
-         <br><br>
-    </div>
-    <!--link firebase and initialize-->
-
-      <!-- The core Firebase JS SDK is always required and must be listed first -->
-<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
-<!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#config-web-app -->
-<script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyAIS3juy5F2o0GXP-oTb3Ojsw-R5Nt3LRE",
-    authDomain: "train-scheduler-8e176.firebaseapp.com",
-    databaseURL: "https://train-scheduler-8e176.firebaseio.com",
-    projectId: "train-scheduler-8e176",
-    storageBucket: "train-scheduler-8e176.appspot.com",
-    messagingSenderId: "815475722065",
-    appId: "1:815475722065:web:237683144b68482c"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-// Get a reference to the database service
-  let database = firebase.database;
-
-  //fill the firebase with initial data when the button is clicked
-  $("#addTrain").on("click", function(event){
-    event.preventDefault();
-    //get the user input from the fields and assign them variables 
-    let trainName = $("#name")
-    .val().trim();
-
-    let destination = $("#destination")
-    .val().trim();
-
-    let firstTrain = $("#firstTrain")
-    .val().trim();
-
-    let frequency = $("#frequency")
-    .val().trim();
-
-    //make a local temporary storage to operate on the train data
-    let tempTrain = {
-      name: trainName,
-      destination: destination,
-      firstTrain: firstTrain,
-      frequency: frequency
-
-    };
-
-
-   //then upload the train data to the database
-   //database.ref().push(tempTrain);
-
-   //log test
-   console.log("these values were pushed to the firebase");
-   console.log(tempTrain.name);
-   console.log(tempTrain.destination);
-   console.log(tempTrain.firstTrain);
-   console.log(tempTrain.frequency);
-
-   alert("Train Added");
-
-   //reset the input boxes
-   $("#name").val("");
-   $("#destination").val("");
-   $("#firstTrain").val("");
-   $("#frequency").val("");
- 
-
-  });
-   
-  //then create a firebase event that retrieves data back on the html and formats accordingly
-    database.ref().on("child_added", function(snapshot, prevChildKey){
-    console.log(snapshot.val());
-
-    //store everething into a varible or let
-
-    let snapName = snapshot.val().name;
-    let snapDestination = snapshot.val().destination;
-    let snapFirstTrain = snapshot.val().firstTrain;
-    let snapFrequency = snapshot.val().frequency;
-
-    let timerArr = snapFirstTrain.split(":");
-    let trainTime = moment().hours(timeArr[0]).minutes(timeArr[1]);
-
-    let maxMoment = moment.max(moment(), trainTime);
-    let tMinutes;
-    let tArrival;
-
-    //if the first train is later than the current time, set arrival to the first train time
-    if (maxMoment === trainTime){
-      tArrival = trainTime.format("hh:mm A");
-      tMinutes = trainTime.diff(moment(),"minutes");
-
-    }else {
-      //here we calculate the minutes until arrival
-      let differenceTimes = moment().diff(trainTime, "minutes");
-      let tRemainder = differenceTimes % snapFrequency;
-      tMinutes = snapFrequency - tRemainder;
-      //calculates the arrival time of the train, and adding the tMinutes to the current time
-
-      tArrival = moment().add(tMinutes, "m").format("hh:mm A");
-
-    }
-    console.log("tMinutes: ", tMinutes);
-    console.log("tArrival:"+ tArrival);
-
-    //add each piece of data to it's appropiate column on the table
-
-    $("#train-list").append(`
+  <!--Set up the table for displaying the information from firebase-->
+  <table class="table table-dark" id="trainSchedule">
+    <thead>
       <tr>
-        <th scope="row"> ${snapName}</th>
-        <td>${snapDetination}</td>
-        <td>${snapFrequency}</td>
-        <td>${tArrival}</td>
-        <td>${tMinutes}</td>
-        </tr>
-        `)
+        <th scope="col">Train Name</th>
+        <th scope="col">Destination</th>
+        <th scope="col">Frequency</th>
+        <th scope="col">Next Train Arrival</th>
+        <th scope="col">Minutes from Now</th>
 
-  });
+      </tr>
+    </thead>
 
-</script>
- 
-   
+    <!--Designate an area of hte table to accept input from firebase-->
+    <tbody id="train-list">
+
+
+    </tbody>
+  </table>
+
+  <h3 class="m-3"> Add A Train </h3>
+  <br>
+
+
+  <!--Area for user imput. Apply bootstrap-->
+  <div class="input">
+
+    <form>
+      <!--form fileds-->
+      <div class="form-group">
+        <label for="formGroupExampleInput"> Train Name </label>
+        <input type="text" class="form-control" id="name" placeholder="Example input">
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput"> Destination </label>
+        <input type="text" class="form-control" id="destination" placeholder="Example input">
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput"> First Train Time </label>
+        <input type="text" class="form-control" id="firstTrain" placeholder="Example input">
+      </div>
+      <div class="form-group">
+        <label for="formGroupExampleInput"> Frequency (Minutes) </label>
+        <input type="text" class="form-control" id="frequency" placeholder="Example input">
+      </div>
+
+    </form>
+    <!--submit button-->
+    <button type="submit" class="btn btn-primary" id="addTrain"> Submit Train </button>
+    <br><br>
+  </div>
+  <!--link firebase and initialize-->
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <!-- <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script> -->
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#config-web-app -->
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyAIS3juy5F2o0GXP-oTb3Ojsw-R5Nt3LRE",
+      authDomain: "train-scheduler-8e176.firebaseapp.com",
+      databaseURL: "https://train-scheduler-8e176.firebaseio.com",
+      projectId: "train-scheduler-8e176",
+      storageBucket: "train-scheduler-8e176.appspot.com",
+      messagingSenderId: "815475722065",
+      appId: "1:815475722065:web:237683144b68482c"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    // Get a reference to the database service
+    let database = firebase.database();
+
+    //fill the firebase with initial data when the button is clicked
+    $("#addTrain").on("click", function (event) {
+      event.preventDefault();
+      //get the user input from the fields and assign them variables 
+      let trainName = $("#name")
+        .val().trim();
+
+      let destination = $("#destination")
+        .val().trim();
+
+      let firstTrain = $("#firstTrain")
+        .val().trim();
+
+      let frequency = $("#frequency")
+        .val().trim();
+
+      //make a local temporary storage to operate on the train data
+      let tempTrain = {
+        name: trainName,
+        destination: destination,
+        firstTrain: firstTrain,
+        frequency: frequency
+
+      };
+
+
+      //then upload the train data to the database
+      database.ref().push(tempTrain);
+
+      //log test
+      console.log("these values were pushed to the firebase");
+      console.log(tempTrain.name);
+      console.log(tempTrain.destination);
+      console.log(tempTrain.firstTrain);
+      console.log(tempTrain.frequency);
+
+      alert("Train Added");
+
+      //reset the input boxes
+      $("#name").val("");
+      $("#destination").val("");
+      $("#firstTrain").val("");
+      $("#frequency").val("");
+
+
+    });
+
+    //then create a firebase event that retrieves data back on the html and formats accordingly
+    database.ref().on("child_added", function (snapshot, prevChildKey) {
+      console.log(snapshot.val(), "test");
+
+      //store everething into a varible or let
+
+      let snapName = snapshot.val().name;
+      let snapDestination = snapshot.val().destination;
+      let snapFirstTrain = snapshot.val().firstTrain;
+      let snapFrequency = snapshot.val().frequency;
+      console.log(snapName, "1");
+      console.log(snapDestination, "2");
+      console.log(snapFirstTrain, "3");
+      console.log(snapFrequency, "4");
+
+
+
+      // $("#train-list").prepend(`
+      //   <tr>
+      //     <th scope="row"> ${snapshot.val().name}</th>
+      //     <td>${snapDetination}</td>
+      //     <td>${snapFrequency}</td>
+      //     <td>${tArrival}</td>
+      //     <td>${tMinutes}</td>
+      //     </tr>
+      //     `)
+
+
+
+
+      var timeArr = snapFirstTrain.split(":");
+      var trainTime = moment()
+        .hours(timeArr[0])
+        .minutes(timeArr[1]);
+      var maxMoment = moment.max(moment(), trainTime); 
+      var tMinutes;
+      var tArrival;
+      console.log("reads lines 204");
+
+      // If the first train is later than the current time, sent arrival to the first train time
+      if (maxMoment === trainTime) {
+        tArrival = trainTime.format("hh:mm A");
+        tMinutes = trainTime.diff(moment(), "minutes");
+      } else {
+        // Calculate the minutes until arrival using hardcore math
+        // To calculate the minutes till arrival, take the current time in unix subtract the FirstTrain time
+        // and find the modulus between the difference and the frequency.
+        var differenceTimes = moment().diff(trainTime, "minutes");
+        var tRemainder = differenceTimes % snapFrequency;
+        tMinutes = snapFrequency - tRemainder;
+        // To calculate the arrival time, add the tMinutes to the current time
+        tArrival = moment()
+          .add(tMinutes, "m")
+          .format("hh:mm A");
+      }
+      console.log("tMinutes:", tMinutes);
+      console.log("tArrival:", tArrival);
+
+      //add each piece of data to it's appropiate column on the table
+
+      $("#trainSchedule > tbody").append(
+        $("<tr>").append(
+          $("<td>").text(snapName),
+          $("<td>").text(snapDestination),
+          $("<td>").text(snapFirstTrain),
+          $("<td>").text(snapFrequency),
+            $("<td>").text(tMinutes),
+
+        ));
+    });
+
+  </script>
+
+
 </body>
+
 </html>
