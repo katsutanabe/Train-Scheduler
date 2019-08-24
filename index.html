@@ -8,12 +8,18 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-database.js"></script>
-
-  <!-- Bootstrap CSS -->
+ 
+  <!-- <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-database.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"
-    integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+  <!-- Bootstrap CSS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+  integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+  crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+  crossorigin="anonymous"></script>
+
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="style.css">
@@ -24,12 +30,12 @@
   <!-- Optional JavaScript -->
 
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
+
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.4.2/firebase-database.js"></script>
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
 </head>
 
@@ -48,7 +54,7 @@
     </div>
   </div>
 
-  <h3 class="m-3"> Check out the Train Schedule </h3>
+  <h3 class="m-3"> Check out the Train Schedule Below: </h3>
   <br>
 
   <!--Set up the table for displaying the information from firebase-->
@@ -57,9 +63,10 @@
       <tr>
         <th scope="col">Train Name</th>
         <th scope="col">Destination</th>
+        <th scope="col">First Train Time</th>
         <th scope="col">Frequency</th>
-        <th scope="col">Next Train Arrival</th>
         <th scope="col">Minutes from Now</th>
+        <th scope="col">Next Train Arrival</th>
 
       </tr>
     </thead>
@@ -155,10 +162,10 @@
 
       //log test
       console.log("these values were pushed to the firebase");
-      console.log(tempTrain.name);
-      console.log(tempTrain.destination);
-      console.log(tempTrain.firstTrain);
-      console.log(tempTrain.frequency);
+      // console.log(tempTrain.name);
+      // console.log(tempTrain.destination);
+      // console.log(tempTrain.firstTrain);
+      // console.log(tempTrain.frequency);
 
       alert("Train Added");
 
@@ -181,10 +188,10 @@
       let snapDestination = snapshot.val().destination;
       let snapFirstTrain = snapshot.val().firstTrain;
       let snapFrequency = snapshot.val().frequency;
-      console.log(snapName, "1");
-      console.log(snapDestination, "2");
-      console.log(snapFirstTrain, "3");
-      console.log(snapFrequency, "4");
+      // console.log(snapName, "1");
+      // console.log(snapDestination, "2");
+      // console.log(snapFirstTrain, "3");
+      // console.log(snapFrequency, "4");
 
 
 
@@ -200,12 +207,15 @@
 
 
 
-
+        console.log(snapFirstTrain)
       var timeArr = snapFirstTrain.split(":");
       var trainTime = moment()
         .hours(timeArr[0])
-        .minutes(timeArr[1]);
-      var maxMoment = moment.max(moment(), trainTime); 
+        .minutes(timeArr[1]).format()
+ 
+        console.log(trainTime)
+    
+      var maxMoment = moment().format()
       var tMinutes;
       var tArrival;
       console.log("reads lines 204");
@@ -237,7 +247,8 @@
           $("<td>").text(snapDestination),
           $("<td>").text(snapFirstTrain),
           $("<td>").text(snapFrequency),
-            $("<td>").text(tMinutes),
+          $("<td>").text(tMinutes),
+          $("<td>").text(tArrival),
 
         ));
     });
